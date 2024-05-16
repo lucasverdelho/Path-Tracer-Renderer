@@ -177,18 +177,13 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         S_around_N.X = cosf(2.f * M_PI * rnd[0]) * aux_sqrt; // cos(2PI * random1) * sqrt(1-r^(2/(n+1)))
         S_around_N.Y = sinf(2.f * M_PI * rnd[0]) * aux_sqrt; // sin(2PI * random1) * sqrt(1-r^(2/(n+1)))
         
+        float pdf = (Ns + 1.f) * powf(cos_theta, Ns) / (2.f * M_PI); // (n+1) * cos(theta) / 2PI
 
+        // generate a coordinate system from N
+        Vector Rx, Ry;
+        Rdir.CoordinateSystem(&Rx, &Ry);
 
-
-
-
-
-
-
-
-
-
-
+        s_dir = S_around_N.Rotate  (Rx, Ry, Rdir);
 
 
         Ray specular(isect.p, s_dir);
@@ -211,7 +206,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         RGB Rcolor = shade (intersected, s_isect, depth+1);
         
         // evaluate this ray contribution, i.e., color
-        // ...
+        color = (f -> Ks * Rcolor * powf(cos_theta, Ns)/(2.f * M_PI)) / pdf;
 
         return color;
 
