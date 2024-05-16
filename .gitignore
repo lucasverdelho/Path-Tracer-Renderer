@@ -1,0 +1,5 @@
+build/*
+.vscode/*
+.cache/*
+MyImage.ppm
+rendered_images/*
