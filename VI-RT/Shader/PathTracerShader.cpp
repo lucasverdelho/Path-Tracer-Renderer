@@ -145,6 +145,8 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
 
     RGB color(0.,0.,0.);
     Vector Rdir, s_dir;
+    bool intersected;
+    Intersection s_isect;
     
     // generate the specular ray
     
@@ -185,7 +187,8 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
 
         s_dir = S_around_N.Rotate  (Rx, Ry, Rdir);
 
-
+        // printf("s_dir: %f %f %f\n", s_dir.X, s_dir.Y, s_dir.Z);
+        // We are geting random values here
         Ray specular(isect.p, s_dir);
         
         specular.pix_x = isect.pix_x;
@@ -196,17 +199,20 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         specular.adjustOrigin(isect.gn);
 
         // OK, we have the ray : trace and shade it recursively
-        bool intersected;
-        Intersection s_isect;
 
         // trace ray
         intersected = scene->trace(specular, &s_isect);
 
+        // printf("s_isect: %f %f %f\n", s_isect.p.X, s_isect.p.Y, s_isect.p.Z);
+        // We are also getting intersections
+
         // shade this intersection
         RGB Rcolor = shade (intersected, s_isect, depth+1);
-        
+        // printf("Rcolor: %f %f %f\n", Rcolor.R, Rcolor.G, Rcolor.B);
+        // We are getting a lot of black colors here
+
         // evaluate this ray contribution, i.e., color
-        color = (f -> Ks * Rcolor * powf(cos_theta, Ns)/(2.f * M_PI)) / pdf;
+        color = (f -> Ks * Rcolor * (2.f * M_PI)) / (Ns + 1.f);
         
         return color;
 
@@ -222,8 +228,6 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         specular.adjustOrigin(isect.gn);
 
         // OK, we have the ray : trace and shade it recursively
-        bool intersected;
-        Intersection s_isect;
         // trace ray
         intersected = scene->trace(specular, &s_isect);
 

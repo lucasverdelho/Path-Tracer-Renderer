@@ -5,7 +5,7 @@
 # empty line including some space
    
 
-mtllib cornell_box_VI.mtl
+mtllib cornell_box_VI_testing.mtl
 
 o floor
 usemtl white
@@ -80,6 +80,7 @@ f -4 -3 -2 -1
 o short_block
 #usemtl orange
 usemtl gold
+#usemtl green
 v    130.0 165.0  65.0
 v     82.0 165.0 225.0
 v    240.0 165.0 272.0

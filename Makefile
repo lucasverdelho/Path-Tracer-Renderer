@@ -52,3 +52,4 @@ clean:
 
 run:
 	./$(APP_DIR)/$(TARGET)
+
