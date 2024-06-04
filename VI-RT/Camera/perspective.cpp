@@ -39,6 +39,10 @@ bool Perspective::GenerateRay(int x, int y, Ray *r, const float *cam_jitter) {
         yc = 2.f * ((float)(H - y - 1) + cam_jitter[1])/H - 1.f;
     }
 
+
+    xc *= tan(fovW / 2);
+    yc *= tan(fovH / 2); 
+
     Vector direction = Vector(xc, yc, 1);
 
     Vector worldDirection = Vector(
