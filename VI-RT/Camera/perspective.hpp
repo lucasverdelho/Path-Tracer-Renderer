@@ -5,18 +5,12 @@
 #include "ray.hpp"
 #include "vector.hpp"
 
-#include <cmath>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 class Perspective : public Camera
 {
     Point Eye, At;
     Vector Up;
 
-    float fovW, fovH; // In radians
+    float fovW, fovH; // In radians horizontal and vertical field of view respectively
     int W, H;
     float c2w[3][3]; // camera 2 world transform
     
