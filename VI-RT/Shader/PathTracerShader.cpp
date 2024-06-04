@@ -212,7 +212,9 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         // We are getting a lot of black colors here
 
         // evaluate this ray contribution, i.e., color
-        color = (f -> Ks * Rcolor * powf(cos_theta, Ns) / (2.f * M_PI)) / pdf;
+        // color = (f -> Ks * Rcolor * powf(cos_theta, Ns) / (2.f * M_PI)) / pdf;
+        
+        color = (f->Ks * Rcolor * cos_theta) / pdf;
         
         return color;
 
