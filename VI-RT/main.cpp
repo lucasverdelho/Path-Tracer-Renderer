@@ -226,7 +226,7 @@ int render_scene(Scene &scene,
                  std::string filename = "cornell_box_VI", 
                  bool parallel = true, 
                  int spp = 32, 
-                 int num_threads = 12, int W = 1024, int H = 720) {
+                 int num_threads = 12, int W = 1024, int H = 1024) {
 
     printf("Scene: %s\n", filename.c_str());
     img = new ImagePPM(W, H);
@@ -237,13 +237,13 @@ int render_scene(Scene &scene,
     // -------------------------------------------------------------------------------------------- //
 
     // Camera parameters
-    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
+    const Point Eye = {280, 275, -130}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
 
     // Calculate the aspect ratio
     const float aspectRatio = W / H;
     
-    const float fovW = 60.f;                                                // in degrees     
+    const float fovW = 130.f;                                                // in degrees     
     const float fovWrad = fovW * (M_PI / 180.0f);                            // to radians
     const float fovHrad = 2.0f * atan(tan(fovWrad / 2.0f) / aspectRatio);    // in radians
 
