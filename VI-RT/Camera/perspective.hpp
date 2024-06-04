@@ -1,10 +1,3 @@
-//
-//  perspective.hpp
-//  VI-RT
-//
-//  Created by Luis Paulo Santos on 10/02/2023.
-//
-
 #ifndef perspective_hpp
 #define perspective_hpp
 
@@ -12,12 +5,18 @@
 #include "ray.hpp"
 #include "vector.hpp"
 
+#include <cmath>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 class Perspective : public Camera
 {
     Point Eye, At;
     Vector Up;
 
-    float fovW, fovH;
+    float fovW, fovH; // In radians
     int W, H;
     float c2w[3][3]; // camera 2 world transform
     
