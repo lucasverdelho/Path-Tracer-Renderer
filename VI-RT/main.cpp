@@ -434,7 +434,7 @@ void load_custom_scene() {
     std::cin >> spp;
 
 
-    render_scene(scene, img, cam, shd, selected_file, parallel, spp, num_threads);
+    render_scene(scene, img, cam, shd, selected_file, parallel, spp, num_threads, W, H);
 
 
     std::cout << "Program finished successfully.\n";
