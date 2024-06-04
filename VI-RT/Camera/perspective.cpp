@@ -1,10 +1,3 @@
-//
-//  perspective.cpp
-//  VI-RT
-//
-//  Created by Luis Paulo Santos on 10/02/2023.
-//
-
 #include "perspective.hpp"
 
 Perspective::Perspective(const Point Eye, const Point At, const Vector Up, const int W, const int H, const float fovW, const float fovH) : Eye(Eye), At(At), Up(Up), W(W), H(H), fovW(fovW), fovH(fovH)
@@ -33,28 +26,40 @@ Perspective::Perspective(const Point Eye, const Point At, const Vector Up, const
     c2w[2][2] = F.Z;
 }
 
+
 bool Perspective::GenerateRay(int x, int y, Ray *r, const float *cam_jitter) {
 
     float xc, yc;
 
     // Apply the jitter to add noise (stochastically)
-    if (cam_jitter==NULL) {
+    if (cam_jitter == NULL) {
         xc = (2.0f * ((float)x + 0.5f) / W) - 1.0f;
         yc = (2.0f * ((float)(H - y - 1) + 0.5f) / H) - 1.0f;
     } else {
-        xc = 2.f * ((float)x + cam_jitter[0])/W - 1.f;
-        yc = 2.f * ((float)(H - y - 1) + cam_jitter[1])/H - 1.f;
+        xc = 2.0f * ((float)x + cam_jitter[0]) / W - 1.0f;
+        yc = 2.0f * ((float)(H - y - 1) + cam_jitter[1]) / H - 1.0f;
     }
 
+    // Adjust for the field of view 
+    float aspectRatio = (float)W / H;
+    float scaleX = tan(fovW / 2.0f);
+    float scaleY = tan(fovH / 2.0f);
+
+    xc *= scaleX * aspectRatio;
+    yc *= scaleY;
+
     Vector direction = Vector(xc, yc, 1);
+    direction.normalize();
 
     Vector worldDirection = Vector(
-            c2w[0][0] * direction.X + c2w[0][1] * direction.Y + c2w[0][2] * direction.Z,
-            c2w[1][0] * direction.X + c2w[1][1] * direction.Y + c2w[1][2] * direction.Z,
-            c2w[2][0] * direction.X + c2w[2][1] * direction.Y + c2w[2][2] * direction.Z
+        c2w[0][0] * direction.X + c2w[0][1] * direction.Y + c2w[0][2] * direction.Z,
+        c2w[1][0] * direction.X + c2w[1][1] * direction.Y + c2w[1][2] * direction.Z,
+        c2w[2][0] * direction.X + c2w[2][1] * direction.Y + c2w[2][2] * direction.Z
     );
+    worldDirection.normalize();
 
     *r = Ray(Eye, worldDirection);
 
     return true;
 }
+
