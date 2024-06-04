@@ -257,7 +257,7 @@ int render_scene(Scene &scene,
     // -------------------------------------------------------------------------------------------- //
 
     // Camera parameters
-    const Point Eye = {280, 275, -830}, At = {280, 265, 0};
+    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
     
     const float fovW = 90.f;                             // in degrees     
