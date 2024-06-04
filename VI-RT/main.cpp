@@ -13,6 +13,7 @@
 #include "PointLight.hpp"
 #include "StandardRenderer.hpp"
 #include "ParallelRenderer.hpp"
+#include "OptimizedParallelRenderer.hpp"
 #include "WhittedShader.hpp"
 #include "perspective.hpp"
 #include "scene.hpp"
@@ -238,7 +239,7 @@ int render_scene(Scene &scene,
                  std::string filename = "cornell_box_VI", 
                  bool parallel = true, 
                  int spp = 32, 
-                 int num_threads = 24) {
+                 int num_threads = 12) {
 
     printf("Scene: %s\n", filename.c_str());
 
@@ -256,7 +257,7 @@ int render_scene(Scene &scene,
     // -------------------------------------------------------------------------------------------- //
 
     // Camera parameters
-    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
+    const Point Eye = {280, 275, -830}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
     
     const float fovW = 90.f;                             // in degrees     
@@ -282,7 +283,8 @@ int render_scene(Scene &scene,
 
 
     if (parallel) {
-        ParallelRenderer myRender(cam, &scene, img, shd, spp);
+        // ParallelRenderer myRender(cam, &scene, img, shd, spp);
+        OptimizedParallelRenderer myRender(cam, &scene, img, shd, spp);
         myRender.Render(0, true, num_threads);
     }
 
