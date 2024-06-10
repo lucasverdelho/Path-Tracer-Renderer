@@ -243,7 +243,7 @@ int render_scene(Scene &scene,
     // Calculate the aspect ratio
     const float aspectRatio = W / H;
     
-    const float fovW = 130.f;                         // horizontal field of view in degrees
+    const float fovW = 90.f;                         // horizontal field of view in degrees
     const float fovH = fovW * (H / W);                // vertical field of view in degrees
     const float fovWrad = fovW * (M_PI / 180.0f);     // to radians
     const float fovHrad = fovH * (M_PI / 180.0f);     // to radians
