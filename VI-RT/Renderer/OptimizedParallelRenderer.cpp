@@ -21,12 +21,12 @@ void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camer
 
                     cam->GenerateRay(x, y, &primary, jitterV);
                     intersected = scene->trace(primary, &isect);
-                    color += shd->shade(intersected, isect, 0);
+                    color += shd->shade(intersected, isect, 0, rng, distribution);
                 }
 
                 color = color / spp;
                 img->set(x, y, color);
-            }
+            } 
         }
     }
     else {

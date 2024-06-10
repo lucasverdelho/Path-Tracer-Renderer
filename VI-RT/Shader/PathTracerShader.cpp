@@ -20,7 +20,10 @@
 
 
 
-RGB PathTracerShader::directLighting (Intersection isect, Phong *f){
+RGB PathTracerShader::directLighting (Intersection isect, 
+                                      Phong *f, 
+                                      std::default_random_engine& rng, 
+                                      std::uniform_real_distribution<float>& distribution) {
     
     RGB color(0.,0.,0.);
     Light *l;
@@ -32,14 +35,12 @@ RGB PathTracerShader::directLighting (Intersection isect, Phong *f){
         RGB this_l_color (0.,0.,0.);
         l = (Light *) (*l_iter);
         
-        // if random sampling reaasign l
-        if (RANDOM_SAMPLE_ONE) {
-            // randomly select one light source
-            l_ndx = rand() % scene->numLights;
-            l = scene->lights[l_ndx];
-            light_pdf = 1.f/((float)scene->numLights);
-        }
-        
+
+        // randomly select one light source
+        l_ndx = rand() % scene->numLights;
+        l = scene->lights[l_ndx];
+        light_pdf = 1.f/((float)scene->numLights);
+
         if (l->type == AMBIENT_LIGHT) {  // is it an ambient light ?
             if (!f->Ka.isZero()) {
                 RGB Ka = f->Ka;
@@ -93,8 +94,8 @@ RGB PathTracerShader::directLighting (Intersection isect, Phong *f){
                 // get the position and radiance of the light source
                 // get 2 random number in [0,1[
                 float rnd[2];
-                rnd[0] = ((float)rand()) / ((float)RAND_MAX);
-                rnd[1] = ((float)rand()) / ((float)RAND_MAX);
+                rnd[0] = distribution(rng);
+                rnd[1] = distribution(rng);
                 L = al->Sample_L(rnd, &lpoint, l_pdf);
                 
                 // compute the direction from the intersection point to the light source
@@ -141,7 +142,11 @@ RGB PathTracerShader::directLighting (Intersection isect, Phong *f){
     return color;
 }
 
-RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int depth) {
+RGB PathTracerShader::specularReflection (Intersection isect, 
+                                          Phong *f, 
+                                          int depth, 
+                                          std::default_random_engine& rng, 
+                                          std::uniform_real_distribution<float>& distribution) {
 
     RGB color(0.,0.,0.);
     Vector Rdir, s_dir;
@@ -165,8 +170,8 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         // get 2 random number in [0,1[
             
         float rnd[2];
-        rnd[0] = ((float)rand()) / ((float)RAND_MAX);
-        rnd[1] = ((float)rand()) / ((float)RAND_MAX);
+        rnd[0] = distribution(rng);
+        rnd[1] = distribution(rng);
         
         Vector S_around_N;
         //  generate s_dir
@@ -207,7 +212,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         // We are also getting intersections
 
         // shade this intersection
-        RGB Rcolor = shade (intersected, s_isect, depth+1);
+        RGB Rcolor = shade (intersected, s_isect, depth+1, rng, distribution);
         // printf("Rcolor: %f %f %f\n", Rcolor.R, Rcolor.G, Rcolor.B);
         // We are getting a lot of black colors here
 
@@ -234,7 +239,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         intersected = scene->trace(specular, &s_isect);
 
         // shade this intersection
-        RGB Rcolor = shade (intersected, s_isect, depth+1);
+        RGB Rcolor = shade (intersected, s_isect, depth+1, rng, distribution);
         
         color = (f->Ks  * Rcolor)  ;
         return color;
@@ -242,7 +247,11 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
     
 }
 
-RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth) {
+RGB PathTracerShader::diffuseReflection (Intersection isect, 
+                                         Phong *f, 
+                                         int depth, 
+                                         std::default_random_engine& rng, 
+                                         std::uniform_real_distribution<float>& distribution) {
 
     RGB color(0.,0.,0.);
     Vector dir;
@@ -254,8 +263,8 @@ RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth
     // actual direction distributed around N
     // get 2 random number in [0,1[
     float rnd[2];
-    rnd[0] = ((float)rand()) / ((float)RAND_MAX);
-    rnd[1] = ((float)rand()) / ((float)RAND_MAX);
+    rnd[0] = distribution(rng);
+    rnd[1] = distribution(rng);
         
     Vector D_around_Z;
 
@@ -290,7 +299,7 @@ RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth
 
     if (!d_isect.isLight) {  // if light source return 0 ; handled by direct
         // shade this intersection
-        RGB Rcolor = shade (intersected, d_isect, depth+1);
+        RGB Rcolor = shade (intersected, d_isect, depth+1, rng, distribution);
 
         color = (f->Kd * Rcolor * cos_theta) / pdf;
     }
@@ -299,7 +308,11 @@ RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth
 }
 
 
-RGB PathTracerShader::shade(bool intersected, Intersection isect, int depth) {
+RGB PathTracerShader::shade(bool intersected, 
+                            Intersection isect, 
+                            int depth, 
+                            std::default_random_engine& rng, 
+                            std::uniform_real_distribution<float>& distribution) {
     RGB color(0.,0.,0.);
     
     // if no intersection, return background
@@ -344,12 +357,12 @@ RGB PathTracerShader::shade(bool intersected, Intersection isect, int depth) {
 
         // Normalize the ratio of specular to diffuse
         float s_p = f->Ks.Y() / (f->Ks.Y() + f->Kd.Y());
-        float rnd = ((float)rand()) / ((float)RAND_MAX);
+        float rnd = distribution(rng);
 
         if (rnd <= s_p || s_p >= (1. - EPSILON)) {
-            lcolor = specularReflection (isect, f, depth) ;
+            lcolor = specularReflection (isect, f, depth, rng, distribution) ;
         } else {
-            lcolor = diffuseReflection (isect, f, depth) ;
+            lcolor = diffuseReflection (isect, f, depth, rng, distribution) ;
         }
         color += lcolor;
 
@@ -363,7 +376,7 @@ RGB PathTracerShader::shade(bool intersected, Intersection isect, int depth) {
 
     // if there is a diffuse component do direct light
     if (!f->Kd.isZero()) {
-        color += directLighting(isect, f);
+        color += directLighting(isect, f, rng, distribution);
     }
         
     return color;
