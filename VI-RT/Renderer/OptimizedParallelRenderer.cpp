@@ -79,7 +79,7 @@ void OptimizedParallelRenderer::Render(int depth, bool jitter, int num_threads) 
     int W = 0, H = 0;
     this->cam->getResolution(&W, &H);
 
-    int block_size = 64;
+    int block_size = 32;
     // Calculate the number of blocks in the x and y directions
     int num_blocks_x = (W + block_size - 1) / block_size; // Ceiling division
     int num_blocks_y = (H + block_size - 1) / block_size; // Ceiling division
