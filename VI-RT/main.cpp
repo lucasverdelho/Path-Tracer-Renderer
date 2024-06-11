@@ -36,9 +36,9 @@
 #endif
 
 
-void save_image(ImagePPM *img, std::string filename = "cornell_box_VI") {
+void save_image(ImagePPM *img, std::string filename, std::chrono::duration<double> real_time_seconds) {
 
-    std::string save_path = "rendered_images/";
+    std::string save_path = "rendered_images/optimising/";
 
     save_path += filename;
 
@@ -46,6 +46,16 @@ void save_image(ImagePPM *img, std::string filename = "cornell_box_VI") {
     save_path += std::to_string(img->getHeight());
     save_path += "x";
     save_path += std::to_string(img->getWidth());
+
+   // Format the rendering time
+    double render_time_seconds = real_time_seconds.count();
+    std::ostringstream render_time_stream;
+    render_time_stream << std::fixed << std::setprecision(2) << render_time_seconds;
+
+    save_path += "_";
+    save_path += render_time_stream.str();
+    save_path += "s"; // Indicating seconds
+
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
@@ -237,7 +247,7 @@ int render_scene(Scene &scene,
     // -------------------------------------------------------------------------------------------- //
 
     // Camera parameters
-    const Point Eye = {80, 275, -330}, At = {280, 265, 0};
+    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
 
     // Calculate the aspect ratio
@@ -278,7 +288,7 @@ int render_scene(Scene &scene,
     std::cout << "CPU Time Used: " << cpu_time_used << " seconds" << std::endl;
     std::cout << "Real Time Elapsed: " << real_time_seconds.count() << " seconds" << std::endl;
 
-    save_image(img, filename);
+    save_image(img, filename, real_time_seconds);
 
     return 0;
 }
