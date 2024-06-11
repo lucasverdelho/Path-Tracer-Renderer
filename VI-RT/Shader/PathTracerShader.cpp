@@ -69,7 +69,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
                 float cosL = Ldir.dot(isect.sn);
                 
                 // shade
-                if (cosL>0.)  { // the light is NOT behind the porimitive
+                if (cosL>0.)  { // the light is NOT behind the primitive
                     // generate the shadow ray
                     Ray shadow(isect.p, Ldir);
                     
