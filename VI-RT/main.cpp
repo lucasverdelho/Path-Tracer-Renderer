@@ -237,7 +237,7 @@ int render_scene(Scene &scene,
     // -------------------------------------------------------------------------------------------- //
 
     // Camera parameters
-    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
+    const Point Eye = {80, 275, -330}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
 
     // Calculate the aspect ratio

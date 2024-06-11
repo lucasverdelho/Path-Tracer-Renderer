@@ -27,7 +27,6 @@ RGB PathTracerShader::directLighting (Intersection isect,
     
     RGB color(0.,0.,0.);
     Light *l;
-    int l_ndx;
     const bool RANDOM_SAMPLE_ONE=true;
     float light_pdf;
 
@@ -36,9 +35,13 @@ RGB PathTracerShader::directLighting (Intersection isect,
         l = (Light *) (*l_iter);
         
 
-        // randomly select one light source
-        l_ndx = rand() % scene->numLights;
-        l = scene->lights[l_ndx];
+        float randomValue = distribution(rng);
+        int light_idx = static_cast<int>(randomValue * scene->numLights);
+
+        // Ensure light_idx is within bounds (just in case)
+        light_idx = std::min(light_idx, scene->numLights - 1);
+
+        l = scene->lights[light_idx];
         light_pdf = 1.f/((float)scene->numLights);
 
         if (l->type == AMBIENT_LIGHT) {  // is it an ambient light ?
