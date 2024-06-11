@@ -180,7 +180,8 @@ RGB PathTracerShader::specularReflection (Intersection isect,
         //  generate s_dir
 
         const float cos_theta = powf(rnd[1], 1.f / (Ns + 1.f)); // r^(1/(n+1))
-        const float aux_r2pow = powf(rnd[1], 2.f / (Ns + 1.f)); // r^(2/(n+1)) // provavelmente posso substituir por cos_theta^2 e reduzir o numero de divisoes
+        const float aux_r2pow = cos_theta * cos_theta; // r^(2/(n+1))
+        // const float aux_r2pow = powf(rnd[1], 2.f / (Ns + 1.f)); // r^(2/(n+1)) // provavelmente posso substituir por cos_theta^2 e reduzir o numero de divisoes
 
 
         float aux_sqrt = sqrtf(1.f - aux_r2pow); // sqrt(1-r^(2/(n+1)))
