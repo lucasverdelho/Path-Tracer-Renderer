@@ -121,7 +121,7 @@ void add_area_lights(Scene &scene)
 {
     // Add first triangle of square light in the middle
     AreaLight *area_light_1 = new AreaLight(
-        RGB(0.85, 0.85, 0.85),        // Power of the light (RGB)
+        RGB(1, 1, 1),        // Power of the light (RGB)
         Point(213, 548, 227),     
         Point(343, 548, 227),       
         Point(343, 548, 332),     
@@ -132,7 +132,7 @@ void add_area_lights(Scene &scene)
     scene.numLights++;
 
     AreaLight *area_light_2 = new AreaLight(
-        RGB(0.85, 0.85, 0.85),      
+        RGB(1, 1, 1),      
         Point(213, 548, 227),     
         Point(343, 548, 332),       
         Point(213, 548, 332),     
@@ -197,24 +197,24 @@ void add_area_lights(Scene &scene)
 void add_point_lights(Scene &scene)
 {
     // Add a point Light to the scene
-    PointLight *point_light_1 = new PointLight(RGB(0.85, 0.85, 0.85), Point(284, 508, 284));
+    PointLight *point_light_1 = new PointLight(RGB(0.30, 0.30, 0.30), Point(184, 508, 284));
     scene.lights.push_back(point_light_1);
     scene.numLights++;
 
     // Add a point Light to the scene
-    PointLight *point_light_2 = new PointLight(RGB(0.85, 0.85, 0.85), Point(284, 508, 286));
+    PointLight *point_light_2 = new PointLight(RGB(0.30, 0.30, 0.30), Point(84, 508, 86));
     scene.lights.push_back(point_light_1);
     scene.numLights++;
 
     // // Add a point Light to the scene
-    // PointLight *point_light_3 = new PointLight(RGB(0.85, 0.85, 0.85), Point(282, 508, 284));
-    // scene.lights.push_back(point_light_1);
-    // scene.numLights++;
+    PointLight *point_light_3 = new PointLight(RGB(0.30, 0.30, 0.30), Point(682, 508, 184));
+    scene.lights.push_back(point_light_1);
+    scene.numLights++;
 
-    // // Add a point Light to the scene
-    // PointLight *point_light_4 = new PointLight(RGB(0.85, 0.85, 0.85), Point(282, 508, 286));
-    // scene.lights.push_back(point_light_1);
-    // scene.numLights++;
+    // Add a point Light to the scene
+    PointLight *point_light_4 = new PointLight(RGB(0.30, 0.30, 0.30), Point(382, 508, 486));
+    scene.lights.push_back(point_light_1);
+    scene.numLights++;
 
 
 }
@@ -236,7 +236,7 @@ int render_scene(Scene &scene,
                  std::string filename = "cornell_box_VI", 
                  bool parallel = true, 
                  int spp = 32, 
-                 int num_threads = 12, int W = 2048, int H = 2048) {
+                 int num_threads = 12, int W = 1024, int H = 1024) {
 
     printf("Scene: %s\n", filename.c_str());
     img = new ImagePPM(W, H);
