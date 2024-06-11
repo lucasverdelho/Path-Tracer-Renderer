@@ -236,7 +236,7 @@ int render_scene(Scene &scene,
                  std::string filename = "cornell_box_VI", 
                  bool parallel = true, 
                  int spp = 32, 
-                 int num_threads = 12, int W = 1024, int H = 1024) {
+                 int num_threads = 12, int W = 2048, int H = 2048) {
 
     printf("Scene: %s\n", filename.c_str());
     img = new ImagePPM(W, H);
