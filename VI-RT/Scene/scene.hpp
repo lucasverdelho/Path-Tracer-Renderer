@@ -42,6 +42,12 @@ public:
         std::cout << "  # Materials: " << numBRDFs << std::endl;
         std::cout << "--------------------------------------------------\n";
     }
+
+
+    // Getter function for prims
+    const std::vector<Primitive *> &getPrimitives() const {
+        return prims;
+    }
 };
 
 #endif /* Scene_hpp */
