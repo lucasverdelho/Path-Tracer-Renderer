@@ -3,10 +3,20 @@
 
 #include "Geometry/geometry.hpp"
 #include "BRDF/BRDF.hpp"
+#include <unordered_map>
+#include <vector>
+#include <iostream>
+#include "light.hpp"
 
-typedef struct Primitive {
+struct Primitive {
     Geometry *g;
     int material_ndx;
-} Primitive;
+
+    // Map to store light IDs and their weights
+    std::unordered_map<int, float> lightWeights;
+
+    // Method to compute light weights
+    void compute_light_weights(const std::vector<Light *> &lights);
+};
 
 #endif /* primitive_hpp */
