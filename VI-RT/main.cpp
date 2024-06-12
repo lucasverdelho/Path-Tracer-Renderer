@@ -229,6 +229,26 @@ void add_ambient_lights(Scene &scene)
 
 
 
+
+
+
+
+
+
+
+void pre_compute_light_weights(Scene &scene) {
+    // Iterate over all the primitives in the scene
+    // And call the compute_light_weights method of each primitive
+    for (auto prim_itr = scene.getPrimitives().begin(); prim_itr != scene.getPrimitives().end(); prim_itr++) {
+        (*prim_itr)->compute_light_weights(scene.lights);
+    }
+}
+
+
+
+
+
+
 int render_scene(Scene &scene, 
                  ImagePPM *img, 
                  Camera *cam, 
@@ -266,6 +286,10 @@ int render_scene(Scene &scene,
 
     auto start_cpu = std::clock();
     auto start_real = std::chrono::steady_clock::now();
+
+
+    pre_compute_light_weights(scene);
+
 
 
     if (parallel) {
