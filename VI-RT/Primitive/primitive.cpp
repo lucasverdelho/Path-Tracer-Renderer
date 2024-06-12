@@ -18,7 +18,6 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
             Point lightPos = pointLight->pos;
             float distance = (lightPos - middle).toVector().norm();
             weight = 1.0f / (distance * distance);
-            
         }
         else {
             std::cerr << "Error: Light source is null" << std::endl;
