@@ -14,6 +14,7 @@ SRC      :=                      \
    $(wildcard VI-RT/*.cpp) \
    $(wildcard VI-RT/Camera/*.cpp)         \
    $(wildcard VI-RT/Image/*.cpp)         \
+   $(wildcard VI-RT/Primitive/*.cpp)         \
    $(wildcard VI-RT/Primitive/BRDF/*.cpp)         \
    $(wildcard VI-RT/Primitive/Geometry/*.cpp)         \
    $(wildcard VI-RT/Renderer/*.cpp)         \
