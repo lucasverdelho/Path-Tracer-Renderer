@@ -6,7 +6,8 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
-#include "light.hpp"
+#include "PointLight.hpp"
+#include "AreaLight.hpp"
 
 struct Primitive {
     Geometry *g;
@@ -15,8 +16,12 @@ struct Primitive {
     // Map to store light IDs and their weights
     std::unordered_map<int, float> lightWeights;
 
-    // Method to compute light weights
+    // Method to compute light weights used for selecting lights stochasticly
     void compute_light_weights(const std::vector<Light *> &lights);
+
+    // Method to calculate the center point of the bounding box 
+    // necessary to calculate the distance to the light sources
+    Point get_bbox_midpoint() const;
 };
 
 #endif /* primitive_hpp */
