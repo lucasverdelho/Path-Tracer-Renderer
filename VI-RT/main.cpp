@@ -237,12 +237,22 @@ void add_ambient_lights(Scene &scene)
 
 
 void pre_compute_light_weights(Scene &scene) {
-    // Iterate over all the primitives in the scene
-    // And call the compute_light_weights method of each primitive
+
+    auto start = std::chrono::high_resolution_clock::now();
+    
     for (auto prim_itr = scene.getPrimitives().begin(); prim_itr != scene.getPrimitives().end(); prim_itr++) {
         (*prim_itr)->compute_light_weights(scene.lights);
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    std::cout << "--------------------------------------------------\n";
+    std::cout << "Time taken to compute light weights for all primitives: " 
+              << duration.count() << " seconds" << std::endl;
+    std::cout << "--------------------------------------------------\n";
 }
+
 
 
 
