@@ -164,7 +164,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
     RGB color(0.,0.,0.);
     RGB this_l_color (0.,0.,0.);
 
-    float light_pdf = 1.f/((float)scene->numLights);
+    float light_pdf = 1.f/spp;
     
 
     if (l->type == AMBIENT_LIGHT) { 
@@ -206,7 +206,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
                 shadow.adjustOrigin(isect.gn);
                 
                 if (scene->visibility(shadow, Ldistance-EPSILON)) {  // if light source not occluded
-                    this_l_color = Kd * L * cosL;
+                    this_l_color += Kd * L * cosL;
                 }
             } // end cosL > 0.
         }
@@ -259,7 +259,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
         }
     }  // end area light
 
-    color = this_l_color;
+    color = this_l_color / light_pdf;
 
     return color;
 
