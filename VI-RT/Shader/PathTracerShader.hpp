@@ -7,18 +7,12 @@
 class PathTracerShader: public Shader {
 
     RGB background;
-    
-    // RGB directLighting (Intersection isect, 
-    //                     Phong *f, 
-    //                     std::default_random_engine& rng, 
-    //                     std::uniform_real_distribution<float>& distribution) ;
-    
+  
     RGB directLighting (Intersection isect, 
                         Phong *f, 
                         std::default_random_engine& rng, 
                         std::uniform_real_distribution<float>& distribution,
-                        std::discrete_distribution<int> lightDistribution,
-                        int spp) ;
+                        std::discrete_distribution<int> lightDistribution) ;
 
     RGB specularReflection (Intersection isect, 
                             Phong *f, 

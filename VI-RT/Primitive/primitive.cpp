@@ -34,7 +34,7 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
 
         // Store the computed weight in the vector
         lightWeights[i] = weight;
-    }
+        }
 
     // Create a light distribution based on the lightWeights map
     std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());

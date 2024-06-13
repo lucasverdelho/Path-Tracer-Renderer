@@ -150,8 +150,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
                                       Phong *f, 
                                       std::default_random_engine& rng, 
                                       std::uniform_real_distribution<float>& distribution,
-                                      std::discrete_distribution<int> lightDistribution,
-                                      int spp=2) {
+                                      std::discrete_distribution<int> lightDistribution) {
 
 
     // Select a light source based on the light distribution
@@ -164,7 +163,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
     RGB color(0.,0.,0.);
     RGB this_l_color (0.,0.,0.);
 
-    float light_pdf = 1.f/spp;
+    float light_pdf = 0.5f;
     
 
     if (l->type == AMBIENT_LIGHT) { 
@@ -252,6 +251,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
                 // adjust origin by an EPSILON along the normal to avoid self occlusion at the origin
                 shadow.adjustOrigin(isect.gn);
                 
+                // printf("%f", l_pdf);
                 if (scene->visibility(shadow, Ldistance-EPSILON)) {  // if light source not occluded
                     this_l_color += (Kd * L * cosL) / l_pdf;
                 }

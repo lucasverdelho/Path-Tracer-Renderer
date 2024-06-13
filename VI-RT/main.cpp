@@ -216,6 +216,33 @@ void add_point_lights(Scene &scene)
     scene.lights.push_back(point_light_4);
     scene.numLights++;
 
+    
+    
+    
+    // // Add a point Light to the scene
+    // PointLight *point_light_5 = new PointLight(RGB(0.80, 0.80, 0.80), Point(20, 530, 280));
+    // scene.lights.push_back(point_light_5);
+    // scene.numLights++;
+
+    // // Add a point Light to the scene
+    // PointLight *point_light_6 = new PointLight(RGB(0.80, 0.80, 0.80), Point(280, 530, 20));
+    // scene.lights.push_back(point_light_6);
+    // scene.numLights++;
+
+    // // // Add a point Light to the scene
+    // PointLight *point_light_7 = new PointLight(RGB(0.80, 0.80, 0.80), Point(540, 530, 280));
+    // scene.lights.push_back(point_light_7);
+    // scene.numLights++;
+
+    // // Add a point Light to the scene
+    // PointLight *point_light_8 = new PointLight(RGB(0.80, 0.80, 0.80), Point(280, 530, 540));
+    // scene.lights.push_back(point_light_8);
+    // scene.numLights++;
+
+    
+    
+    
+    
     for (int i = 0; i < 50; i++) {
         PointLight *point_light = new PointLight(RGB(0.80, 0.80, 0.80), Point(1000 + i * 50, 1000 + i * 50, 1000 + i * 50));
         scene.lights.push_back(point_light);
