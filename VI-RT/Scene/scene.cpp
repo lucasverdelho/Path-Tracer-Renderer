@@ -219,22 +219,20 @@ bool Scene::Load(const std::string &fname)
 
 
 
-
-bool Scene::trace(Ray r, Intersection *isect)
-{
+bool Scene::trace(Ray r, Intersection *isect){
     Intersection curr_isect;
     bool intersection = false;
 
     if (numPrimitives == 0)
         return false;
 
-    // iterate over all primitives
+    // Iterate over all primitives
     for (auto prim_itr = prims.begin(); prim_itr != prims.end(); prim_itr++)
     {
         if ((*prim_itr)->g->intersect(r, &curr_isect))
         {
             if (!intersection)
-            { // first intersection
+            { // First intersection
                 intersection = true;
                 *isect = curr_isect;
                 isect->f = BRDFs[(*prim_itr)->material_ndx];
@@ -249,36 +247,111 @@ bool Scene::trace(Ray r, Intersection *isect)
 
     isect->isLight = false;
 
-
-    // Iterate over ALLL!!! the lights
+    // Iterate over all the lights
     for (auto l = lights.begin(); l != lights.end(); l++)
     {
-        if ((*l) -> type == AREA_LIGHT) {
-
+        if ((*l)->type == AREA_LIGHT)
+        {
             AreaLight *al = (AreaLight *)*l;
 
-            if (al->gem->intersect(r, &curr_isect)) {
-
-                if (!intersection) { // first intersection
-
+            if (al->gem->intersect(r, &curr_isect))
+            {
+                if (!intersection)
+                { // First intersection
                     intersection = true;
                     *isect = curr_isect;
                     isect->isLight = true;
                     isect->Le = al->L();
                 }
-
-                else if (curr_isect.depth < isect->depth) {
+                else if (curr_isect.depth < isect->depth)
+                {
                     *isect = curr_isect;
                     isect->isLight = true;
                     isect->Le = al->L();
                 }
             }
+        }
+    }
 
+    return intersection;
+
+}
+
+
+
+
+bool Scene::trace(Ray r, Intersection *isect, std::vector<float> *lightWeights)
+{
+    Intersection curr_isect;
+    bool intersection = false;
+
+    if (numPrimitives == 0)
+        return false;
+
+    // Iterate over all primitives
+    for (auto prim_itr = prims.begin(); prim_itr != prims.end(); prim_itr++)
+    {
+        if ((*prim_itr)->g->intersect(r, &curr_isect))
+        {
+            if (!intersection)
+            { // First intersection
+                intersection = true;
+                *isect = curr_isect;
+                isect->f = BRDFs[(*prim_itr)->material_ndx];
+
+                // Copy light weights of the intersected primitive
+                if (lightWeights != nullptr)
+                {
+                    *lightWeights = (*prim_itr)->lightWeights;
+                }
+            }
+            else if (curr_isect.depth < isect->depth)
+            {
+                *isect = curr_isect;
+                isect->f = BRDFs[(*prim_itr)->material_ndx];
+
+                // Copy light weights of the intersected primitive
+                if (lightWeights != nullptr)
+                {
+                    *lightWeights = (*prim_itr)->lightWeights;
+                }
+            }
+        }
+    }
+
+    isect->isLight = false;
+
+    // Iterate over all the lights
+    for (auto l = lights.begin(); l != lights.end(); l++)
+    {
+        if ((*l)->type == AREA_LIGHT)
+        {
+            AreaLight *al = (AreaLight *)*l;
+
+            if (al->gem->intersect(r, &curr_isect))
+            {
+                if (!intersection)
+                { // First intersection
+                    intersection = true;
+                    *isect = curr_isect;
+                    isect->isLight = true;
+                    isect->Le = al->L();
+                }
+                else if (curr_isect.depth < isect->depth)
+                {
+                    *isect = curr_isect;
+                    isect->isLight = true;
+                    isect->Le = al->L();
+                }
+            }
         }
     }
 
     return intersection;
 }
+
+
+
 
 
 

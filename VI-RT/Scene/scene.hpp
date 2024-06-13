@@ -30,7 +30,11 @@ public:
 
     bool SetLights(void) { return true; };
 
+    // New overloaded trace function without lightWeights parameter
     bool trace(Ray r, Intersection *isect);
+
+    // Existing trace function that takes lightWeights parameter
+    bool trace(Ray r, Intersection *isect, std::vector<float> *lightWeights);
 
     bool visibility(Ray s, const float maxL);
 
