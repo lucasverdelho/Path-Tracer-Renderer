@@ -17,17 +17,28 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
             // Access the position member of PointLight
             Point lightPos = pointLight->pos;
             float distance = (lightPos - middle).toVector().norm();
-            weight = 1.0f / (distance * distance);
+            weight = 1.0f / (distance * distance * distance * distance * distance * distance * distance * distance * distance);
         } else {
             std::cerr << "Error: Light source is null" << std::endl;
             continue;
         }
 
-        std::cout << "Processing light ID: " << i << " with weight: " << weight << std::endl;
+        // std::cout << "Processing light ID: " << i << " with weight: " << weight << std::endl;
 
         // Store the computed weight in the vector
         lightWeights[i] = weight;
     }
+
+    // Create a light distribution based on the lightWeights map
+    std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+
+
+    // Iterate over each index and print its probability
+    for (size_t i = 0; i < lightWeights.size(); ++i) {
+        std::cout << "Probability for index " << i << ": " 
+                << std::fixed << std::setprecision(6) << lightDistribution.probabilities()[i] << std::endl;
+    }
+
 }
 
 // Implementation of the method to calculate the middle of the bounding box
