@@ -7,6 +7,10 @@
 #include <iostream>
 #include "PointLight.hpp"
 #include "AreaLight.hpp"
+#include <stdlib.h>
+#include <iomanip> 
+#include <random> 
+
 
 struct Primitive {
     Geometry *g;
