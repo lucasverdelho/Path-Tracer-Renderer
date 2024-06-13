@@ -1,8 +1,8 @@
 #include "primitive.hpp"
 
 void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
-
     lightWeights.clear();
+    lightWeights.resize(lights.size(), 0.0f); // Resize the vector to accommodate all lights
 
     Point middle = get_bbox_midpoint();
     Light *l;
@@ -18,22 +18,17 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
             Point lightPos = pointLight->pos;
             float distance = (lightPos - middle).toVector().norm();
             weight = 1.0f / (distance * distance);
-        }
-        else {
+        } else {
             std::cerr << "Error: Light source is null" << std::endl;
             continue;
         }
-        
+
         std::cout << "Processing light ID: " << i << " with weight: " << weight << std::endl;
 
-        // Store the light ID and its computed weight
-        lightWeights[static_cast<int>(i)] = weight;
+        // Store the computed weight in the vector
+        lightWeights[i] = weight;
     }
 }
-
-
-
-
 
 // Implementation of the method to calculate the middle of the bounding box
 Point Primitive::get_bbox_midpoint() const {
