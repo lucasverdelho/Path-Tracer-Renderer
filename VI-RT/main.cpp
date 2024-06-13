@@ -196,27 +196,39 @@ void add_area_lights(Scene &scene)
 // Function to add point lights to the scene
 void add_point_lights(Scene &scene)
 {
-    // Add a point Light to the scene
-    PointLight *point_light_1 = new PointLight(RGB(0.30, 0.30, 0.30), Point(184, 508, 284));
-    scene.lights.push_back(point_light_1);
-    scene.numLights++;
-
-    // Add a point Light to the scene
-    PointLight *point_light_2 = new PointLight(RGB(0.30, 0.30, 0.30), Point(84, 508, 86));
-    scene.lights.push_back(point_light_2);
-    scene.numLights++;
+    // // Add a point Light to the scene
+    // PointLight *point_light_1 = new PointLight(RGB(0.30, 0.30, 0.30), Point(184, 508, 284));
+    // scene.lights.push_back(point_light_1);
+    // scene.numLights++;
 
     // // Add a point Light to the scene
-    PointLight *point_light_3 = new PointLight(RGB(0.30, 0.30, 0.30), Point(682, 508, 184));
-    scene.lights.push_back(point_light_3);
-    scene.numLights++;
+    // PointLight *point_light_2 = new PointLight(RGB(0.30, 0.30, 0.30), Point(84, 508, 86));
+    // scene.lights.push_back(point_light_2);
+    // scene.numLights++;
 
-    // Add a point Light to the scene
-    PointLight *point_light_4 = new PointLight(RGB(0.30, 0.30, 0.30), Point(382, 508, 486));
-    scene.lights.push_back(point_light_4);
-    scene.numLights++;
+    // // // Add a point Light to the scene
+    // PointLight *point_light_3 = new PointLight(RGB(0.30, 0.30, 0.30), Point(284, 208, 284));
+    // scene.lights.push_back(point_light_3);
+    // scene.numLights++;
 
+    // // Add a point Light to the scene
+    // PointLight *point_light_4 = new PointLight(RGB(0.30, 0.30, 0.30), Point(382, 108, 486));
+    // scene.lights.push_back(point_light_4);
+    // scene.numLights++;
 
+    // // for loop to add more point lights in a line for testing the light selection algorithm
+    // for (int i = 0; i < 10; i++) {
+    //     PointLight *point_light = new PointLight(RGB(0.05, 0.05, 0.05), Point(184 + i * 50, i * 50 + 308, 384 + i * 50));
+    //     scene.lights.push_back(point_light);
+    //     scene.numLights++;
+    // }
+
+    // // for loop to add very far away point lights for testing the light selection algorithm
+    // for (int i = 0; i < 20; i++) {
+    //     PointLight *point_light = new PointLight(RGB(0.05, 0.05, 0.05), Point(1000 + i*1000, 1000 + i*1000, 1000 + i*1000));
+    //     scene.lights.push_back(point_light);
+    //     scene.numLights++;
+    // }
 }
 
 
