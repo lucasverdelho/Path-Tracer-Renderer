@@ -196,26 +196,31 @@ void add_area_lights(Scene &scene)
 // Function to add point lights to the scene
 void add_point_lights(Scene &scene)
 {
-    // // Add a point Light to the scene
-    // PointLight *point_light_1 = new PointLight(RGB(0.30, 0.30, 0.30), Point(184, 508, 284));
-    // scene.lights.push_back(point_light_1);
-    // scene.numLights++;
+    // Add a point Light to the scene
+    PointLight *point_light_1 = new PointLight(RGB(0.80, 0.80, 0.80), Point(20, 530, 280));
+    scene.lights.push_back(point_light_1);
+    scene.numLights++;
+
+    // Add a point Light to the scene
+    PointLight *point_light_2 = new PointLight(RGB(0.80, 0.80, 0.80), Point(280, 530, 20));
+    scene.lights.push_back(point_light_2);
+    scene.numLights++;
 
     // // Add a point Light to the scene
-    // PointLight *point_light_2 = new PointLight(RGB(0.30, 0.30, 0.30), Point(84, 508, 86));
-    // scene.lights.push_back(point_light_2);
-    // scene.numLights++;
+    PointLight *point_light_3 = new PointLight(RGB(0.80, 0.80, 0.80), Point(540, 530, 280));
+    scene.lights.push_back(point_light_3);
+    scene.numLights++;
 
-    // // // Add a point Light to the scene
-    // PointLight *point_light_3 = new PointLight(RGB(0.30, 0.30, 0.30), Point(284, 208, 284));
-    // scene.lights.push_back(point_light_3);
-    // scene.numLights++;
+    // Add a point Light to the scene
+    PointLight *point_light_4 = new PointLight(RGB(0.80, 0.80, 0.80), Point(280, 530, 540));
+    scene.lights.push_back(point_light_4);
+    scene.numLights++;
 
-    // // Add a point Light to the scene
-    // PointLight *point_light_4 = new PointLight(RGB(0.30, 0.30, 0.30), Point(382, 108, 486));
-    // scene.lights.push_back(point_light_4);
-    // scene.numLights++;
-
+    for (int i = 0; i < 50; i++) {
+        PointLight *point_light = new PointLight(RGB(0.80, 0.80, 0.80), Point(1000 + i * 50, 1000 + i * 50, 1000 + i * 50));
+        scene.lights.push_back(point_light);
+        scene.numLights++;
+    }
     // // for loop to add more point lights in a line for testing the light selection algorithm
     // for (int i = 0; i < 10; i++) {
     //     PointLight *point_light = new PointLight(RGB(0.05, 0.05, 0.05), Point(184 + i * 50, i * 50 + 308, 384 + i * 50));
@@ -251,9 +256,15 @@ void add_ambient_lights(Scene &scene)
 void pre_compute_light_weights(Scene &scene) {
 
     auto start = std::chrono::high_resolution_clock::now();
+
+    int i = 0;
     
     for (auto prim_itr = scene.getPrimitives().begin(); prim_itr != scene.getPrimitives().end(); prim_itr++) {
+        std::cout << "--------------------------------------------------\n";
+        std::cout << "Computing light weights for primitive: " << i << std::endl;
+        std::cout << "--------------------------------------------------\n";
         (*prim_itr)->compute_light_weights(scene.lights);
+        i++;
     }
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -403,7 +414,7 @@ void load_custom_scene() {
     std::cin >> shader_choice;
 
 
-    RGB background(0.05, 0.05, 0.55);
+    RGB background(0.00, 0.00, 0.00);
     switch (shader_choice) {
         case 1:
             shd = new AmbientShader(&scene, background);
@@ -518,7 +529,7 @@ void load_default_scene() {
     Shader *shd;
     Scene scene;
 
-    RGB background(0.05, 0.05, 0.55);
+    RGB background(0.05, 0.05, 0.05);
 
     shd = new PathTracerShader(&scene, background);
 
