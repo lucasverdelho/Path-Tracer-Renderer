@@ -4,73 +4,38 @@ void displayProgressBar(int processed_blocks, int total_blocks);
 
 void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camera* cam, Scene* scene, Shader* shd, Image* img, bool jitter, std::atomic<int>& progress_counter, int total_blocks, std::default_random_engine& rng, std::uniform_real_distribution<float>& distribution) {
     
-    if (jitter) {
-        for (int y = start_y; y < end_y; y++) {      // loop over rows
-            for (int x = start_x; x < end_x; x++) {        // loop over columns
+    for (int y = start_y; y < end_y; y++) {      // loop over rows
+        for (int x = start_x; x < end_x; x++) {        // loop over columns
 
-                RGB color(0., 0., 0.);
-                Ray primary;
-                Intersection isect;
-                bool intersected;
+            RGB color(0., 0., 0.);
+            Ray primary;
+            Intersection isect;
+            bool intersected;
 
-                for (int ss = 0; ss < spp; ss++) {
+            for (int ss = 0; ss < spp; ss++) {
 
-                    float jitterV[2];
-                    jitterV[0] = distribution(rng);
-                    jitterV[1] = distribution(rng);
+                float jitterV[2];
+                jitterV[0] = distribution(rng);
+                jitterV[1] = distribution(rng);
 
-                    cam->GenerateRay(x, y, &primary, jitterV);
+                cam->GenerateRay(x, y, &primary, jitterV);
 
-                    // Declare a variable to store the map of lightWeights of the intersected object if it is a mesh
-                    std::vector<float> lightWeights;
-
-
-                    // Generate a ray and trace it
-                    intersected = scene->trace(primary, &isect, &lightWeights);
-
-                    // Print the lightWeights map for debugging
-                    // for (auto it = lightWeights.begin(); it != lightWeights.end(); ++it) {
-                    //     std::cout << it->first << " " << it->second << std::endl;
-                    // }
-
-
-                    // Create a light distribution based on the lightWeights map
-                    std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
-
-                    // Print the lightDistribution for debugging
-                    // for (int i = 0; i < lightWeights.size(); i++) {
-                    //     std::cout << lightDistribution(rng) << std::endl;
-                    // }
-
-                    color += shd->shade(intersected, isect, 0, rng, distribution, lightDistribution);
-                }
-
-                color = color / spp;
-                img->set(x, y, color);
-            } 
-        }
-    }
-    else {
-        for (int y = start_y; y < end_y; y++) {  
-            for (int x = start_x; x < end_x; x++) {  
-
-                RGB color(0., 0., 0.);
-                Ray primary;
-                Intersection isect;
-                bool intersected;
-
-                cam->GenerateRay(x, y, &primary, NULL);
-            
+                // Declare a variable to store the map of lightWeights of the intersected object if it is a mesh
                 std::vector<float> lightWeights;
 
                 // Generate a ray and trace it
                 intersected = scene->trace(primary, &isect, &lightWeights);
-                color = shd->shade(intersected, isect, 0);
 
-                img->set(x, y, color);
+                std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+
+                color += shd->shade(intersected, isect, 0, rng, distribution, lightDistribution);
             }
-        }
+
+            color = color / spp;
+            img->set(x, y, color);
+        } 
     }
+
     int processed_blocks = ++progress_counter;
     displayProgressBar(processed_blocks, total_blocks);
 }
