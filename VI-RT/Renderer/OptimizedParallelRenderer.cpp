@@ -20,8 +20,29 @@ void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camer
                     jitterV[1] = distribution(rng);
 
                     cam->GenerateRay(x, y, &primary, jitterV);
-                    intersected = scene->trace(primary, &isect);
-                    color += shd->shade(intersected, isect, 0, rng, distribution);
+
+                    // Declare a variable to store the map of lightWeights of the intersected object if it is a mesh
+                    std::vector<float> lightWeights;
+
+
+                    // Generate a ray and trace it
+                    intersected = scene->trace(primary, &isect, &lightWeights);
+
+                    // Print the lightWeights map for debugging
+                    // for (auto it = lightWeights.begin(); it != lightWeights.end(); ++it) {
+                    //     std::cout << it->first << " " << it->second << std::endl;
+                    // }
+
+
+                    // Create a light distribution based on the lightWeights map
+                    std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+
+                    // Print the lightDistribution for debugging
+                    // for (int i = 0; i < lightWeights.size(); i++) {
+                    //     std::cout << lightDistribution(rng) << std::endl;
+                    // }
+
+                    color += shd->shade(intersected, isect, 0, rng, distribution, lightDistribution);
                 }
 
                 color = color / spp;
@@ -39,7 +60,11 @@ void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camer
                 bool intersected;
 
                 cam->GenerateRay(x, y, &primary, NULL);
-                intersected = scene->trace(primary, &isect);
+            
+                std::vector<float> lightWeights;
+
+                // Generate a ray and trace it
+                intersected = scene->trace(primary, &isect, &lightWeights);
                 color = shd->shade(intersected, isect, 0);
 
                 img->set(x, y, color);
