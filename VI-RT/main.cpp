@@ -529,7 +529,7 @@ void load_default_scene() {
     Shader *shd;
     Scene scene;
 
-    RGB background(0.05, 0.05, 0.05);
+    RGB background(0.05, 0.05, 0.55);
 
     shd = new PathTracerShader(&scene, background);
 
@@ -546,7 +546,7 @@ void load_default_scene() {
 
     scene.printSummary();
 
-    // add_area_lights(scene);
+    add_area_lights(scene);
     add_point_lights(scene);
 
     render_scene(scene, img, cam, shd);
