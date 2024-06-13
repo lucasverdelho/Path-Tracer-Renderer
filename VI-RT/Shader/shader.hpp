@@ -17,15 +17,11 @@ public:
     ~Shader () {}
     
     virtual RGB shade(bool intersected, Intersection isect, int depth) {
-        return RGB(); // Default implementation without random number generation
-    }
-
-    virtual RGB shade(bool intersected, Intersection isect, int depth, std::default_random_engine& rng, std::uniform_real_distribution<float>& distribution) {
-        return RGB(); // Placeholder implementation for shaders requiring random number generation
+        return RGB(); 
     }
 
     virtual RGB shade(bool intersected, Intersection isect, int depth, std::default_random_engine& rng, std::uniform_real_distribution<float>& distribution, std::discrete_distribution<int> lightDistribution) {
-        return RGB(); // Placeholder implementation for shaders requiring random number generation and light distribution
+        return RGB();
     }
 };
 
