@@ -16,6 +16,7 @@
 #include "OptimizedParallelRenderer.hpp"
 #include "WhittedShader.hpp"
 #include "perspective.hpp"
+#include "orthographic.hpp"
 #include "scene.hpp"
 #include <time.h>
 
@@ -272,14 +273,6 @@ void add_ambient_lights(Scene &scene)
 }
 
 
-
-
-
-
-
-
-
-
 void pre_compute_light_weights(Scene &scene) {
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -306,9 +299,6 @@ void pre_compute_light_weights(Scene &scene) {
 
 
 
-
-
-
 int render_scene(Scene &scene, 
                  ImagePPM *img, 
                  Camera *cam, 
@@ -326,19 +316,27 @@ int render_scene(Scene &scene,
     // -------------------------/!\ TEMPORARILY HARDCODED CAMERA /!\------------------------------- //
     // -------------------------------------------------------------------------------------------- //
 
-    // Camera parameters
-    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
+    // // Camera parameters
+    // const Point Eye = {280, 275, -330}, At = {280, 265, 0};
+    // const Vector Up = {0, 1, 0};
+
+    // // Calculate the aspect ratio
+    // const float aspectRatio = W / H;
+    
+    // const float fovW = 90.f;                         // horizontal field of view in degrees
+    // const float fovH = fovW * (H / W);                // vertical field of view in degrees
+    // const float fovWrad = fovW * (M_PI / 180.0f);     // to radians
+    // const float fovHrad = fovH * (M_PI / 180.0f);     // to radians
+
+    // cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
+
+
+    // Orthographic Camera
+    const Point Eye = {278, 273, -200}, At = {278, 273, 0};
     const Vector Up = {0, 1, 0};
 
-    // Calculate the aspect ratio
-    const float aspectRatio = W / H;
-    
-    const float fovW = 90.f;                         // horizontal field of view in degrees
-    const float fovH = fovW * (H / W);                // vertical field of view in degrees
-    const float fovWrad = fovW * (M_PI / 180.0f);     // to radians
-    const float fovHrad = fovH * (M_PI / 180.0f);     // to radians
+    cam = new Orthographic(Eye, At, Up, W, H);
 
-    cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
 
     // -------------------------------------------------------------------------------------------- //
     // -------------------------/!\ TEMPORARILY HARDCODED CAMERA /!\------------------------------- //
@@ -376,6 +374,11 @@ int render_scene(Scene &scene,
 
     return 0;
 }
+
+
+
+
+
 
 
 
@@ -549,6 +552,20 @@ void load_custom_scene() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void load_default_scene() {
 
     Perspective *cam; 
@@ -574,7 +591,7 @@ void load_default_scene() {
     scene.printSummary();
 
     add_area_lights(scene);
-    add_point_lights(scene);
+    // add_point_lights(scene);
 
     render_scene(scene, img, cam, shd);
 
