@@ -331,11 +331,14 @@ int render_scene(Scene &scene,
     // cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
 
 
-    // Orthographic Camera
-    const Point Eye = {0, 400, -400}, At = {278, 273, 260};
+    // // Orthographic Camera
+    const Point Eye = {-1500, 800, -400}, At = {273, 273, 273};
     const Vector Up = {0, 1, 0};
 
     cam = new Orthographic(Eye, At, Up, W, H);
+
+
+    // Camera with focus point
 
 
     // -------------------------------------------------------------------------------------------- //

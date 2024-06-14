@@ -7,10 +7,9 @@
 
 class Orthographic : public Camera
 {
-    Point Eye, At;
-    Vector Up;
-    int realW, realH;
-    int W, H;
+    Point Eye, At; // Camera position and look-at point
+    Vector Up; // Vector pointing upwards from the camera
+    int W, H; // Resolution of the camera
     float c2w[3][3]; // camera 2 world transform
     
 public:
