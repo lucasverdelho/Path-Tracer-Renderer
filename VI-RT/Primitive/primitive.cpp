@@ -1,12 +1,12 @@
 #include "primitive.hpp"
 
-void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
-    lightWeights.clear();
-    lightWeights.resize(lights.size(), 0.0f); // Resize the vector to accommodate all lights
 
+void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
     Point middle = get_bbox_midpoint();
     Light *l;
     float weight = 0.0f;
+    std::vector<float> lightWeights;
+    lightWeights.resize(lights.size(), 0.0f);
 
     for (size_t i = 0; i < lights.size(); ++i) {
         l = lights[i];
@@ -29,23 +29,18 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
             std::cerr << "Error: Light source is null" << std::endl;
             continue;
         }
-
-        // std::cout << "Processing light ID: " << i << " with weight: " << weight << std::endl;
-
         // Store the computed weight in the vector
         lightWeights[i] = weight;
-        }
+    }
 
-    // Create a light distribution based on the lightWeights map
-    std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
-
+    // Create a light distribution based on the lightWeights
+    lightDistribution = std::discrete_distribution<int>(lightWeights.begin(), lightWeights.end());
 
     // Iterate over each index and print its probability
     for (size_t i = 0; i < lightWeights.size(); ++i) {
         std::cout << "Probability for index " << i << ": " 
-                << std::fixed << std::setprecision(6) << lightDistribution.probabilities()[i] << std::endl;
+                  << std::fixed << std::setprecision(6) << lightDistribution.probabilities()[i] << std::endl;
     }
-
 }
 
 // Implementation of the method to calculate the middle of the bounding box

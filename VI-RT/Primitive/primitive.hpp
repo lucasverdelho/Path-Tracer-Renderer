@@ -11,13 +11,12 @@
 #include <iomanip> 
 #include <random> 
 
-
 struct Primitive {
     Geometry *g;
     int material_ndx;
 
-    // Vector to store light weights where the index corresponds to the light index
-    std::vector<float> lightWeights;
+    // Discrete distribution for selecting lights stochastically
+    std::discrete_distribution<int> lightDistribution;
 
     // Method to compute light weights used for selecting lights stochastically
     void compute_light_weights(const std::vector<Light *> &lights);

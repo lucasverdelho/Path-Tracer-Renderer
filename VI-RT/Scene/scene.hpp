@@ -34,7 +34,7 @@ public:
     bool trace(Ray r, Intersection *isect);
 
     // Existing trace function that takes lightWeights parameter
-    bool trace(Ray r, Intersection *isect, std::vector<float> *lightWeights);
+    bool trace(Ray r, Intersection *isect, std::discrete_distribution<int> *lightDistribution);
 
     bool visibility(Ray s, const float maxL);
 

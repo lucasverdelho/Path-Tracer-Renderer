@@ -20,13 +20,11 @@ void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camer
 
                 cam->GenerateRay(x, y, &primary, jitterV);
 
-                // Declare a variable to store the map of lightWeights of the intersected object if it is a mesh
-                std::vector<float> lightWeights;
+                // Declare a variable to store the light weights distribution from trace()
+                std::discrete_distribution<int> lightDistribution;
 
                 // Generate a ray and trace it
-                intersected = scene->trace(primary, &isect, &lightWeights);
-
-                std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+                intersected = scene->trace(primary, &isect, &lightDistribution);
 
                 color += shd->shade(intersected, isect, 0, rng, distribution, lightDistribution);
             }

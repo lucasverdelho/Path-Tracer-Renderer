@@ -279,8 +279,7 @@ bool Scene::trace(Ray r, Intersection *isect){
 
 
 
-
-bool Scene::trace(Ray r, Intersection *isect, std::vector<float> *lightWeights)
+bool Scene::trace(Ray r, Intersection *isect, std::discrete_distribution<int> *lightDistribution)
 {
     Intersection curr_isect;
     bool intersection = false;
@@ -299,10 +298,10 @@ bool Scene::trace(Ray r, Intersection *isect, std::vector<float> *lightWeights)
                 *isect = curr_isect;
                 isect->f = BRDFs[(*prim_itr)->material_ndx];
 
-                // Copy light weights of the intersected primitive
-                if (lightWeights != nullptr)
+                // Copy light distribution of the intersected primitive
+                if (lightDistribution != nullptr)
                 {
-                    *lightWeights = (*prim_itr)->lightWeights;
+                    *lightDistribution = (*prim_itr)->lightDistribution;
                 }
             }
             else if (curr_isect.depth < isect->depth)
@@ -310,10 +309,10 @@ bool Scene::trace(Ray r, Intersection *isect, std::vector<float> *lightWeights)
                 *isect = curr_isect;
                 isect->f = BRDFs[(*prim_itr)->material_ndx];
 
-                // Copy light weights of the intersected primitive
-                if (lightWeights != nullptr)
+                // Copy light distribution of the intersected primitive
+                if (lightDistribution != nullptr)
                 {
-                    *lightWeights = (*prim_itr)->lightWeights;
+                    *lightDistribution = (*prim_itr)->lightDistribution;
                 }
             }
         }

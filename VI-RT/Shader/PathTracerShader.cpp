@@ -332,11 +332,9 @@ RGB PathTracerShader::specularReflection (Intersection isect,
         // OK, we have the ray : trace and shade it recursively
 
         // trace ray
-        std::vector<float> lightWeights;
+        std::discrete_distribution<int> lightDistribution;
 
-        intersected = scene->trace(specular, &s_isect, &lightWeights);
-
-        std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+        intersected = scene->trace(specular, &s_isect, &lightDistribution);
 
         // shade this intersection
         RGB Rcolor = shade (intersected, s_isect, depth+1, rng, distribution, lightDistribution);
@@ -360,11 +358,9 @@ RGB PathTracerShader::specularReflection (Intersection isect,
         specular.adjustOrigin(isect.gn);
 
         // OK, we have the ray : trace and shade it recursively
-        // trace ray
-        std::vector<float> lightWeights;
-        intersected = scene->trace(specular, &s_isect, &lightWeights);
+        std::discrete_distribution<int> lightDistribution;
 
-        std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+        intersected = scene->trace(specular, &s_isect, &lightDistribution);
 
         // shade this intersection
         RGB Rcolor = shade (intersected, s_isect, depth+1, rng, distribution, lightDistribution);
@@ -422,15 +418,10 @@ RGB PathTracerShader::diffuseReflection (Intersection isect,
     bool intersected;
     Intersection d_isect;
 
-    // trace ray
-    intersected = scene->trace(diffuse, &d_isect);
-
-    std::vector<float> lightWeights;
+    std::discrete_distribution<int> lightDistribution;
 
     // Generate a ray and trace it
-    intersected = scene->trace(diffuse, &d_isect, &lightWeights);
-
-    std::discrete_distribution<int> lightDistribution(lightWeights.begin(), lightWeights.end());
+    intersected = scene->trace(diffuse, &d_isect, &lightDistribution);
 
     if (!d_isect.isLight) {  // if light source return 0 ; handled by direct
         // shade this intersection
