@@ -316,26 +316,26 @@ int render_scene(Scene &scene,
     // -------------------------/!\ TEMPORARILY HARDCODED CAMERA /!\------------------------------- //
     // -------------------------------------------------------------------------------------------- //
 
-    // // Camera parameters
-    // const Point Eye = {280, 275, -330}, At = {280, 265, 0};
-    // const Vector Up = {0, 1, 0};
-
-    // // Calculate the aspect ratio
-    // const float aspectRatio = W / H;
-    
-    // const float fovW = 90.f;                         // horizontal field of view in degrees
-    // const float fovH = fovW * (H / W);                // vertical field of view in degrees
-    // const float fovWrad = fovW * (M_PI / 180.0f);     // to radians
-    // const float fovHrad = fovH * (M_PI / 180.0f);     // to radians
-
-    // cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
-
-
-    // // Orthographic Camera
-    const Point Eye = {-1500, 800, -400}, At = {273, 273, 273};
+    // Camera parameters
+    const Point Eye = {280, 275, -330}, At = {280, 265, 0};
     const Vector Up = {0, 1, 0};
 
-    cam = new Orthographic(Eye, At, Up, W, H);
+    // Calculate the aspect ratio
+    const float aspectRatio = W / H;
+    
+    const float fovW = 90.f;                         // horizontal field of view in degrees
+    const float fovH = fovW * (H / W);                // vertical field of view in degrees
+    const float fovWrad = fovW * (M_PI / 180.0f);     // to radians
+    const float fovHrad = fovH * (M_PI / 180.0f);     // to radians
+
+    cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
+
+
+    // // // Orthographic Camera
+    // const Point Eye = {-1500, 800, -400}, At = {273, 273, 273};
+    // const Vector Up = {0, 1, 0};
+
+    // cam = new Orthographic(Eye, At, Up, W, H);
 
 
     // Camera with focus point
