@@ -594,7 +594,7 @@ void load_default_scene() {
     scene.printSummary();
 
     add_area_lights(scene);
-    // add_point_lights(scene);
+    add_point_lights(scene);
 
     render_scene(scene, img, cam, shd);
 
