@@ -36,11 +36,10 @@ bool Orthographic::GenerateRay(int x, int y, Ray *r, const float *cam_jitter)
 {
     float xc, yc;
 
-    xc = realW + x;
-    yc = realH - y;
+    xc = realW + x + cam_jitter[0];
+    yc = realH - y - cam_jitter[1];
 
-    // Construct the local origin in camera space
-    Point localOrigin = Point(xc, yc, Eye.Z);
+    Point origin = Point(xc, yc, Eye.Z);
 
     // The direction is the same for all rays in an orthographic camera
     Vector direction = Vector(
@@ -49,7 +48,7 @@ bool Orthographic::GenerateRay(int x, int y, Ray *r, const float *cam_jitter)
         c2w[2][2]
     );
 
-    *r = Ray(localOrigin, direction);
+    *r = Ray(origin, direction);
 
     return true;
 }
