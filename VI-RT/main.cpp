@@ -332,7 +332,7 @@ int render_scene(Scene &scene,
 
 
     // Orthographic Camera
-    const Point Eye = {400, 400, -700}, At = {278, 273, 0};
+    const Point Eye = {0, 400, -400}, At = {278, 273, 260};
     const Vector Up = {0, 1, 0};
 
     cam = new Orthographic(Eye, At, Up, W, H);
