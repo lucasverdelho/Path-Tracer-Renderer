@@ -7,15 +7,8 @@ This project was developed for Visualização e Iluminação (Visualization and 
 
 
 
-
-
-
-tentei implementar um algoritmo que pre calculava o peso de cada luz para cada objeto com base na distancia entre a luz e o ponto medio da boundign box e depois usar isso para escolher com maior probabilidade as luzes mais proximas mas isto nao deu certo a nivel de eficiencia entao deixei de parte.
-
-
-
-
-A minha ideia atual:
-- a funcao de dar load a cena faz de tal modo que cada faceID seja unico e em sequencia
-- Posso deste modo guardar de alguma maneira num mapa de idx da mesh como chave e como valor o par de id de começo e o id de fim das faces que pertencem a essa mesh
-- vou ter q
+TODO:
+- [ ] Clean up the comments and fix variable names etc
+- [ ] THE ORTHOGONAL CAMERA IS CALCULATING THE COORDINATES IN A WEIRD WAY AND THE X IS INVERTED (POSITIVES AND NEGATIVES I THINK)
+- [ ] Test with different scenes
+- [ ] Improve the GUI for selecting the scene
