@@ -28,7 +28,7 @@ Orthographic::Orthographic(const Point Eye, const Point At, const Vector Up, con
 
     // Compute the real width and height coordinates of the camera
     realW = Eye.X - W/2;
-    realH = Eye.Y - H/2;
+    realH = Eye.Y + H/2;
 
 }
 
@@ -36,8 +36,8 @@ bool Orthographic::GenerateRay(int x, int y, Ray *r, const float *cam_jitter)
 {
     float xc, yc;
 
-    xc = x + realW;
-    yc = y + realH;
+    xc = realW + x;
+    yc = realH - y;
 
     // Construct the local origin in camera space
     Point localOrigin = Point(xc, yc, Eye.Z);
