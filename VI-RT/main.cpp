@@ -447,7 +447,7 @@ void load_custom_scene() {
     std::cin >> shader_choice;
 
 
-    RGB background(0.00, 0.00, 0.00);
+    RGB background(0.05, 0.05, 0.55);
     switch (shader_choice) {
         case 1:
             shd = new AmbientShader(&scene, background);
@@ -510,7 +510,7 @@ void load_custom_scene() {
     scene.printSummary();
 
     add_area_lights(scene);
-    // add_point_lights(scene);
+    add_point_lights(scene);
 
 
     // -------------------------------------------------------------------------------------------- //
