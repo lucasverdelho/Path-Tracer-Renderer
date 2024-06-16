@@ -24,6 +24,8 @@ struct Primitive {
     // Method to calculate the center point of the bounding box 
     // necessary to calculate the distance to the light sources
     Point get_bbox_midpoint() const;
+
+    Triangle calculate_centroid(Triangle t) const;
 };
 
 #endif /* primitive_hpp */
