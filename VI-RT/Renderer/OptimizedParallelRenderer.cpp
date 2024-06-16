@@ -2,8 +2,12 @@
 
 void displayProgressBar(int processed_blocks, int total_blocks);
 
-void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camera* cam, Scene* scene, Shader* shd, Image* img, bool jitter, std::atomic<int>& progress_counter, int total_blocks, std::default_random_engine& rng, std::uniform_real_distribution<float>& distribution) {
+void renderWorker(int start_x, int end_x, int start_y, int end_y, int spp, Camera* cam, Scene* scene, Shader* shd, Image* img, bool jitter, std::atomic<int>& progress_counter, int total_blocks) {
     
+    // Each thread declares its own random engine and distribution
+    thread_local std::default_random_engine rng(std::random_device{}());
+    std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+
     for (int y = start_y; y < end_y; y++) {      // loop over rows
         for (int x = start_x; x < end_x; x++) {        // loop over columns
 
@@ -67,13 +71,10 @@ void OptimizedParallelRenderer::Render(int depth, bool jitter, int num_threads) 
     int num_blocks_y = (H + block_size - 1) / block_size; 
 
     int total_blocks = num_blocks_x * num_blocks_y;
-    
 
-    // Create random number generator and uniform distribution
-    std::default_random_engine rng(std::random_device{}());
-    std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-
-
+    // Remove the shared random number generator and uniform distribution
+    // std::default_random_engine rng(std::random_device{}());
+    // std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
     std::queue<std::tuple<int, int, int, int>> blocks_queue;
     for (int by = 0; by < num_blocks_y; by++) {
@@ -103,7 +104,7 @@ void OptimizedParallelRenderer::Render(int depth, bool jitter, int num_threads) 
                 blocks_queue.pop();
             }
             renderWorker(std::get<0>(block), std::get<1>(block), std::get<2>(block), std::get<3>(block),
-                         this->spp, this->cam, this->scene, this->shd, this->img, jitter, progress_counter, total_blocks, rng, distribution);
+                         this->spp, this->cam, this->scene, this->shd, this->img, jitter, progress_counter, total_blocks);
         }
     };
 
@@ -111,7 +112,6 @@ void OptimizedParallelRenderer::Render(int depth, bool jitter, int num_threads) 
     for (int i = 0; i < num_threads; i++) {
         threads.emplace_back(thread_func);
     }
-
     for (auto &thread : threads) {
         thread.join();
     }
