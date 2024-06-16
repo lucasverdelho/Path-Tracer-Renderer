@@ -21,7 +21,7 @@ void Primitive::compute_light_weights(const std::vector<Light *> &lights) {
         }
         else if (l->type == AREA_LIGHT) {
             AreaLight *areaLight = static_cast<AreaLight*>(l);
-            Point lightPos = areaLight->gem->v1;
+            Point lightPos = areaLight->gem->centroid();
             float distance = (lightPos - middle).toVector().norm();
             weight = 1.0f / (distance * distance * distance);
         }

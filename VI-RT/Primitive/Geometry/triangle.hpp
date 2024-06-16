@@ -51,6 +51,13 @@ public:
         return area;
 
     }
+
+    Point centroid() {
+        double centroidX = (v1.X + v2.X + v3.X) / 3.0;
+        double centroidY = (v1.Y + v2.Y + v3.Y) / 3.0;
+        double centroidZ = (v1.Z + v2.Z + v3.Z) / 3.0;
+        return Point(centroidX, centroidY, centroidZ);
+    }
 };
 
 #endif /* triangle_hpp */
