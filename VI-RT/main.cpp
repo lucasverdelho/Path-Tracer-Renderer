@@ -305,7 +305,7 @@ int render_scene(Scene &scene,
                  Shader *shd, 
                  std::string filename = "cornell_box_VI", 
                  bool parallel = true, 
-                 int spp = 32, 
+                 int spp = 128, 
                  int num_threads = 12, int W = 1024, int H = 1024) {
 
     printf("Scene: %s\n", filename.c_str());
@@ -332,7 +332,7 @@ int render_scene(Scene &scene,
 
 
     // // // Orthographic Camera
-    // const Point Eye = {-1500, 800, -400}, At = {273, 273, 273};
+    // const Point Eye = {-1273, 1273, -1273}, At = {273, 273, 273};
     // const Vector Up = {0, 1, 0};
 
     // cam = new Orthographic(Eye, At, Up, W, H);

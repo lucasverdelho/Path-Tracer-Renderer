@@ -259,7 +259,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
         }
     }  // end area light
 
-    color = this_l_color * 1.45;
+    color = this_l_color * 1.4         5;
 
     return color;
 
