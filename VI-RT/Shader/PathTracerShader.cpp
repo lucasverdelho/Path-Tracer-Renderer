@@ -145,27 +145,22 @@
 //     return color;
 // }
 
-
 RGB PathTracerShader::directLighting (Intersection isect, 
                                       Phong *f, 
                                       std::default_random_engine& rng, 
                                       std::uniform_real_distribution<float>& distribution,
                                       std::discrete_distribution<int> lightDistribution) {
 
-
     // Select a light source based on the light distribution
     int indx = lightDistribution(rng);
-    // int indx = rand() % scene->numLights;
-    // printf("Light index: %d\n", indx);
-
     Light *l = scene->lights[indx];
 
     RGB color(0.,0.,0.);
     RGB this_l_color (0.,0.,0.);
 
-    float light_pdf = 0.5f;
+    // Get the probability of the chosen light
+    float light_pdf = lightDistribution.probabilities()[indx];
     
-
     if (l->type == AMBIENT_LIGHT) { 
         if (!f->Ka.isZero()) {
             RGB Ka = f->Ka;
@@ -188,11 +183,11 @@ RGB PathTracerShader::directLighting (Intersection isect,
             // now normalize Ldir
             Ldir.normalize();
             
-            // compute the cosine between Ldir  and the shading normal at the intersection point
+            // compute the cosine between Ldir and the shading normal at the intersection point
             float cosL = Ldir.dot(isect.sn);
             
             // shade
-            if (cosL>0.)  { // the light is NOT behind the primitive
+            if (cosL > 0.) { // the light is NOT behind the primitive
                 // generate the shadow ray
                 Ray shadow(isect.p, Ldir);
                 
@@ -204,14 +199,14 @@ RGB PathTracerShader::directLighting (Intersection isect,
                 // adjust origin by an EPSILON along the normal to avoid self occlusion at the origin
                 shadow.adjustOrigin(isect.gn);
                 
-                if (scene->visibility(shadow, Ldistance-EPSILON)) {  // if light source not occluded
-                    this_l_color += (Kd * L * cosL ) / light_pdf;
+                if (scene->visibility(shadow, Ldistance - EPSILON)) {  // if light source not occluded
+                    this_l_color += (Kd * L * cosL) ;
                 }
             } // end cosL > 0.
         }
     }
 
-    if (l->type == AREA_LIGHT) {  // is it an area light ?
+    if (l->type == AREA_LIGHT) {  // is it an area light?
         if (!f->Kd.isZero()) {
             RGB L, Kd = f->Kd;
             Point lpoint;
@@ -219,7 +214,7 @@ RGB PathTracerShader::directLighting (Intersection isect,
             AreaLight *al = (AreaLight *)l;
             
             // get the position and radiance of the light source
-            // get 2 random number in [0,1[
+            // get 2 random numbers in [0,1[
             float rnd[2];
             rnd[0] = distribution(rng);
             rnd[1] = distribution(rng);
@@ -232,14 +227,14 @@ RGB PathTracerShader::directLighting (Intersection isect,
             // now normalize Ldir
             Ldir.normalize();
             
-            // compute the cosine between Ldir  and the shading normal at the intersection point
+            // compute the cosine between Ldir and the shading normal at the intersection point
             float cosL = Ldir.dot(isect.sn);
             
-            // compute the cosine between Ldir  and the area light source normal
+            // compute the cosine between Ldir and the area light source normal
             float cosL_LA = Ldir.dot(al->gem->normal);
             
             // shade
-            if (cosL>0. && cosL_LA<=0.)  { // light is NOT behind primitive AND light normal points to the ray o
+            if (cosL > 0. && cosL_LA <= 0.) { // light is NOT behind primitive AND light normal points to the ray origin
                 // generate the shadow ray
                 Ray shadow(isect.p, Ldir);
                 
@@ -252,20 +247,18 @@ RGB PathTracerShader::directLighting (Intersection isect,
                 shadow.adjustOrigin(isect.gn);
                 
                 // printf("%f", l_pdf);
-                if (scene->visibility(shadow, Ldistance-EPSILON)) {  // if light source not occluded
-                    this_l_color += (Kd * L * cosL) / l_pdf ;
+                if (scene->visibility(shadow, Ldistance - EPSILON)) {  // if light source not occluded
+                    this_l_color += (Kd * L * cosL); /// l_pdf;
                 }
             } // end cosL > 0.
         }
     }  // end area light
 
-    color = this_l_color * 1.4         5;
+    // Divide the final contribution by the probability of the chosen light
+    color = this_l_color / light_pdf;
 
     return color;
-
 }
-
-
 
 RGB PathTracerShader::specularReflection (Intersection isect, 
                                           Phong *f, 
